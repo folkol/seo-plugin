@@ -1,0 +1,8 @@
+## This file is the velocity outputtemplate.
+## An output template content will be auto created by the plugin framework.
+
+<link rel="stylesheet" type="text/css" href="#file({'contentId': $filesContentId, 'filename':'com.atex.plugins.seoplugin.MainElement.css', '':''})" />
+
+<div class="seo-plugin_MainElement">
+This is a <em>Hello GT example plugin</em> element. Content name is <em>$content.name</em>.
+</div>

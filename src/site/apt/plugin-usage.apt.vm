@@ -1,0 +1,19 @@
+Usage
+
+  This plugin has an element template called Hello GT Example Plugin that can be used on e.g. the start page of Greenfield Times.
+
+  To create a new element, open up Greenfield Times and select the Start page tab. In the Right column, create a new element.
+
+[images/howto-1.png]
+
+  Enter a name and click Insert.
+
+[images/howto-2.png]
+
+  The new element should be in the list.
+
+[images/howto-3.png]
+
+  On the site, the new element should say hello.
+
+[images/howto-4.png]
