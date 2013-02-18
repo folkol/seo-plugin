@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template-definition version="1.0" xmlns="http://www.polopoly.com/polopoly/cm/app/xml">
+  <input-template name="com.atex.plugins.seoplugin.SitemapConfigField.PublishingQueueContentListWrapper">
+    <content-list-wrapper>com.polopoly.cm.app.policy.ConfigurableContentListWrapper</content-list-wrapper>
+    <idparam-list name="allowedInputTemplates">
+      <contentid>
+        <externalid>com.atex.plugins.baseline.ContentListPublishingQueue</externalid>
+      </contentid>
+      <contentid>
+        <externalid>com.atex.plugins.baseline.MetaDataDrivenPublishingQueue</externalid>
+      </contentid>
+      <contentid>
+        <externalid>com.atex.plugins.baseline.StatisticsDrivenPublishingQueue</externalid>
+      </contentid>
+    </idparam-list>
+  </input-template>
+  <input-template name="com.atex.plugins.seoplugin.SitemapConfigField" label="com.atex.plugins.seoplugin.SitemapConfigField.label">
+    <policy>com.atex.plugins.seoplugin.SitemapConfigFieldPolicy</policy>
+    <editor>com.polopoly.cm.app.widget.OComplexFieldTopPolicyWidget</editor>
+    <viewer>com.polopoly.cm.app.widget.OComplexFieldTopPolicyWidget</viewer>
+    <content-list name="sitemapPublishingQueue" input-template="com.atex.plugins.seoplugin.SitemapConfigField.PublishingQueueContentListWrapper" />
+    <content-list name="googleNewsSitemapPublishingQueue" input-template="com.atex.plugins.seoplugin.SitemapConfigField.PublishingQueueContentListWrapper" />
+    <layout name="regularsitemapsection" input-template="p.LabeledSection" label="com.atex.plugins.seoplugin.SitemapConfigField.regular.label">
+      <field name="useManual" input-template="p.Checkbox" label="com.atex.plugins.seoplugin.SitemapConfigField.manual">
+        <param name="inlineHelp">true</param>
+        <help>com.atex.plugins.seoplugin.SitemapConfigField.manual.help</help>
+      </field>
+      <field name="manualxml" input-template="p.siteengine.editor.CodeMirror" label="com.atex.plugins.seoplugin.SitemapConfigField.manual.sitemapXML">
+          <param name="height">50</param>
+          <param name="editorParameters">xml lineNumbers</param>
+      </field>
+      <field name="usePublishingQueues" input-template="p.Checkbox" label="com.atex.plugins.seoplugin.SitemapConfigField.queues">
+        <param name="inlineHelp">true</param>
+        <help>com.atex.plugins.seoplugin.SitemapConfigField.queues.help</help>
+      </field>
+      <field name="sitemapPublishingQueue" input-template="p.ContentListEntryContainer" label="com.atex.plugins.seoplugin.SitemapConfigField.queues.list">
+        <param name="showCutButton">false</param>
+        <param name="contentListName">sitemapPublishingQueue</param>
+        <param name="showActionButtonsInViewMode">false</param>
+      </field>
+    </layout>
+    <layout name="googlenewssitemapsection" input-template="p.LabeledSection" label="com.atex.plugins.seoplugin.SitemapConfigField.googlenews.label">
+      <field name="useGoogleNews" input-template="p.Checkbox" label="com.atex.plugins.seoplugin.SitemapConfigField.googlenews">
+        <param name="inlineHelp">true</param>
+        <help>com.atex.plugins.seoplugin.SitemapConfigField.googlenews.help</help>
+      </field>
+      <field name="googleNewsSitemapPublishingQueue" input-template="p.ContentListEntryContainer" label="cm.general.PublishingQueue">
+        <param name="showCutButton">false</param>
+        <param name="contentListName">googleNewsSitemapPublishingQueue</param>
+        <param name="showActionButtonsInViewMode">false</param>
+      </field>
+    </layout>
+  </input-template>
+</template-definition>

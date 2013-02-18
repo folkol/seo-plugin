@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template-definition version="1.0" xmlns="http://www.polopoly.com/polopoly/cm/app/xml">
+  <output-template name="com.atex.plugins.seoplugin.RobotsTxt.ot" input-template="p.siteengine.XmlOutputTemplate">
+    <content-xml>
+      <contentref group="plugin" name="plugindef">
+        <contentid>
+          <major>Content</major>
+          <externalid>plugins.com.atex.plugins.seo-plugin</externalid>
+        </contentid>
+      </contentref>
+      <component group="polopoly.Content" name="name">Robots.txt output template</component>
+      <component group="output/modelKeyMode" name="selected">no-cache</component>
+      <contentref group="output/renderer" name="selected">
+        <contentid>
+          <externalid>p.siteengine.VelocityRenderer</externalid>
+        </contentid>
+      </contentref>
+      <component group="output/renderer" name="templateFileName">com.atex.plugins.seoplugin.RobotsTxt.vm</component>
+      <contentref group="output/controller" name="selected">
+        <contentid>
+          <externalid>p.siteengine.JavaClassRenderController</externalid>
+        </contentid>
+      </contentref>
+      <component group="output/controller/selected/renderControllerClass" name="value">com.atex.plugins.seoplugin.RobotsTxtController</component>
+    </content-xml>
+  </output-template>
+</template-definition>

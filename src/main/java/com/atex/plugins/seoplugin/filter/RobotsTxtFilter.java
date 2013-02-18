@@ -17,14 +17,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Filter to be mapped into a project's web.xml front and preview in order to provide sitemap.xml files.
+ * Filter to be mapped into a project's web.xml front and preview in order to provide robots.txt files.
  * @author sarasprang
  */
-public class SitemapFilter implements Filter{
-    private static final Logger LOG = Logger.getLogger(SitemapFilter.class.getName());
-    private static final String SITEMAP_NEWS_XML="news-sitemap.xml";
-    private final static String sitemapOutputTemplate = "?ot=com.atex.plugins.seoplugin.Sitemap.ot";
-    private final static Pattern sitemapPattern = Pattern.compile("(.*)/[^/]*sitemap\\.xml", Pattern.CASE_INSENSITIVE);
+public class RobotsTxtFilter implements Filter {
+    private static final Logger LOG = Logger.getLogger(RobotsTxtFilter.class.getName());
+    private final static String robotsTxtOutputTemplate = "?ot=com.atex.plugins.seoplugin.RobotsTxt.ot";
+    private final static Pattern robotsTxtPattern = Pattern.compile("(.*)/[^/]*robots\\.txt", Pattern.CASE_INSENSITIVE);
 
     public ServletContext servletContent;
 
@@ -33,30 +32,23 @@ public class SitemapFilter implements Filter{
      */
     @Override
     public void destroy() {
-        //Nothing to do
+        // Nothing to do
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response,
+            FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         String url = FileFilterUtils.decodeUrl(httpRequest.getRequestURI());
-        LOG.log(Level.FINE, "SitemapFilter will check for sitemap present in URL: " + url);
-        Matcher matcher = sitemapPattern.matcher(url);
+        LOG.log(Level.FINE, "RobotsTxtFilter will check for robots.txt present in URL: " + url);
+        Matcher matcher = robotsTxtPattern.matcher(url);
         if (matcher.matches()) {
-            //Check for news-sitemap.xml first
-            if(url.toLowerCase().endsWith(SITEMAP_NEWS_XML)) {
-                httpRequest.setAttribute("mode","news_sitemap");
-            }
-            else {
-                //URL ends with sitemap.xml
-                httpRequest.setAttribute("mode","sitemap");
-            }
-            String newURI = FileFilterUtils.getUriToFileTemplate(sitemapPattern, url, sitemapOutputTemplate); 
-            LOG.log(Level.FINE, "SitemapFilter is redirecting to: " + newURI);
+            String newURI = FileFilterUtils.getUriToFileTemplate(robotsTxtPattern, url, robotsTxtOutputTemplate);
+            LOG.log(Level.FINE, "RobotsTxtFilter is redirecting to: " + newURI);
             servletContent.getRequestDispatcher(newURI).forward(httpRequest, httpResponse);
             return;
         }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template-definition version="1.0" xmlns="http://www.polopoly.com/polopoly/cm/app/xml">
+  <input-template name="com.atex.plugins.seoplugin.RobotsConfigField">
+    <policy>com.polopoly.cm.policy.PolicyImplBase</policy>
+    <editor>com.polopoly.cm.app.widget.OComplexFieldTopPolicyWidget</editor>
+    <viewer>com.polopoly.cm.app.widget.OComplexFieldTopPolicyWidget</viewer>
+    <layout name="robotstxtsection" input-template="p.LabeledSection" label="com.atex.plugins.seoplugin.RobotsConfigField.label">
+      <field name="robotsTXT" input-template="p.siteengine.editor.CodeMirror" label="com.atex.plugins.seoplugin.RobotsConfigField.robotsConfiguration">
+        <help>com.atex.plugins.seoplugin.RobotsConfigField.robotsConfiguration.help</help>
+        <param name="inlineHelp">true</param>
+        <param name="height">200</param>
+        <param name="editorParameters">xml lineNumbers</param>
+      </field>
+    </layout>
+  </input-template>
+</template-definition>
