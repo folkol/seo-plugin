@@ -1,0 +1,27 @@
+<title>$!pageTitle</title>
+#set($isNotPage = $m.context.page.pathAfterPage.size() > 0)
+
+## If we are an element or article page and not in preview
+#if($isNotPage && !$m.request.preview.inPreviewMode)
+  #set($canonicalContentId = $m.context.page.pathAfterPage.get(0).contentId)
+  #set($canonicalPath = $tool_path.getPathToRoot($canonicalContentId))
+  #if($canonicalPath)
+    #set($canonicalLink = "#link({'path': $canonicalPath, 'htmlEncodeLink': 'true', 'requestAttribs': {'localLinksEnabled': false}, '':''})")
+    #if("$!canonicalLink" != "")
+    <link rel="canonical" href="$!canonicalLink" />
+    #end
+  #end
+#end
+#if("$!pageDescription" != "")
+
+<meta name="description" content="$!esc.html($pageDescription)" />
+#end
+#if("$!pageKeywords" != "")
+  #if($isNotPage)
+    #set($metadataKeyword = "news_keywords")
+  #else
+    #set($metadataKeyword = "keywords")     
+  #end
+
+<meta name="$metadataKeyword" content="$!pageKeywords" />
+#end

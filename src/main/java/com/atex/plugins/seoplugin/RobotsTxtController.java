@@ -1,23 +1,23 @@
 package com.atex.plugins.seoplugin;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.apache.commons.lang.StringUtils;
 
-import com.polopoly.model.Model;
-import com.polopoly.model.ModelPathUtil;
+import com.polopoly.cm.ContentId;
+import com.polopoly.cm.policy.PolicyCMServer;
 import com.polopoly.render.CacheInfo;
 import com.polopoly.render.RenderException;
 import com.polopoly.render.RenderRequest;
 import com.polopoly.render.RenderResponse;
-import com.polopoly.siteengine.mvc.Renderer;
 import com.polopoly.siteengine.dispatcher.ControllerContext;
 import com.polopoly.siteengine.model.TopModel;
-import com.polopoly.siteengine.model.context.PageScope;
-import com.polopoly.siteengine.model.context.SiteScope;
-import com.polopoly.siteengine.model.context.StructureScope;
-import com.polopoly.siteengine.mvc.controller.RenderControllerSystem;
+import com.polopoly.siteengine.mvc.Renderer;
 
 
-public class RobotsTxtController extends RenderControllerSystem {
+public class RobotsTxtController extends InheritableSettingsController {
 
+    private static final Logger LOG = Logger.getLogger(RobotsTxtController.class.getName());
     /**
      * {@inheritDoc}
      */
@@ -27,18 +27,11 @@ public class RobotsTxtController extends RenderControllerSystem {
         super.populateModelAfterCacheKey(request, m, cacheInfo, context);
 
         String robotsTxt = "";
-        PageScope page = m.getContext().getPage();
+        PolicyCMServer cmServer = getCmClient(context).getPolicyCMServer();
 
-        // Use page setting
-        if (page != null) {
-            robotsTxt = getRobotsTxtFromModel(page);
-        }
-        // Fallback to site
-        SiteScope site = m.getContext().getSite();
-        if (StringUtils.isEmpty(robotsTxt) && site != null) {
-            robotsTxt = getRobotsTxtFromModel(site);
-        }
-        // Last fallback, disallow all
+        robotsTxt = getRobotsTxtFromModel(cmServer, getCurrentPage(m));
+        
+        // Fallback, disallow all
         if (StringUtils.isEmpty(robotsTxt)) {
             robotsTxt = "User-agent: *\r\nDisallow: /\r\n";
         }
@@ -56,14 +49,20 @@ public class RobotsTxtController extends RenderControllerSystem {
         return new RendererForStaticTxtContent(defaultRenderer);
     }
 
-    private String getRobotsTxtFromModel(StructureScope siteOrPage) {
-        Model siteModel = siteOrPage.getContent();
-        if (siteModel != null) {
-            return (String) ModelPathUtil.get(siteModel, "robotsConfig/robotsTXT/value");
+    private String getRobotsTxtFromModel(PolicyCMServer cmServer, ContentId contentId) {
+        try {
+            return getInheritedValue(cmServer, contentId, "robotsConfig/robotsTXT");
+        } catch (Exception e) {
+            LOG.log(Level.WARNING,
+                    "Encoutered error while trying to find inherited robots value, will use fall back!", e);
         }
         return "";
     }
 
+    /**
+     * Internal class to set text/plain as content type of response
+     * @author sarasprang
+     */
     protected class RendererForStaticTxtContent implements Renderer {
         private final Renderer defaultRenderer;
 

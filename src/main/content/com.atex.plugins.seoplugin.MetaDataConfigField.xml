@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template-definition version="1.0" xmlns="http://www.polopoly.com/polopoly/cm/app/xml">
+  <input-template name="com.atex.plugins.seoplugin.MetaDataConfigField">
+    <policy>com.polopoly.cm.policy.PolicyImplBase</policy>
+    <editor>com.polopoly.cm.app.widget.OComplexFieldTopPolicyWidget</editor>
+    <viewer>com.polopoly.cm.app.widget.OComplexFieldTopPolicyWidget</viewer>
+    <layout name="metadataSection" input-template="p.LabeledSection" label="com.atex.plugins.seoplugin.MetaDataConfigField.label">
+    <field name="seoSiteName" input-template="p.TextInput" label="com.atex.plugins.seoplugin.MetaDataConfigField.seoSiteName">
+      <help>com.atex.plugins.seoplugin.MetaDataConfigField.seoSiteName.help</help>
+      <param name="inlineHelp">true</param>
+      <param name="size">70</param>
+      <param name="maxlength">66</param>
+    </field>
+    <field name="seoSiteDescription" input-template="p.TextArea" label="com.atex.plugins.seoplugin.MetaDataConfigField.seoSiteDescription">
+      <help>com.atex.plugins.seoplugin.MetaDataConfigField.seoSiteDescription.help</help>
+      <param name="inlineHelp">true</param>
+      <param name="rows">5</param>
+      <param name="cols">50</param>
+    </field>
+    <field name="seoSiteKeywords" input-template="p.TextInput" label="com.atex.plugins.seoplugin.MetaDataConfigField.seoSiteKeywords">
+      <help>com.atex.plugins.seoplugin.MetaDataConfigField.seoSiteKeywords.help</help>
+      <param name="inlineHelp">true</param>
+      <param name="size">70</param>
+    </field>
+    </layout>
+  </input-template>
+</template-definition>

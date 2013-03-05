@@ -21,8 +21,7 @@
           <externalid>p.siteengine.JavaClassRenderController</externalid>
         </contentid>
       </contentref>
-      <component group="output/controller/selected/renderControllerClass" name="value">com.atex.plugins.seoplugin.SitemapController</component>
+      <component group="output/controller/selected/renderControllerClass" name="value">com.atex.plugins.seoplugin.GoogleNewsSitemapController</component>
     </content-xml>
-    
   </output-template>
 </template-definition>

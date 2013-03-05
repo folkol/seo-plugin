@@ -44,7 +44,7 @@
         <param name="inlineHelp">true</param>
         <help>com.atex.plugins.seoplugin.SitemapConfigField.googlenews.help</help>
       </field>
-      <field name="googleNewsSitemapPublishingQueue" input-template="p.ContentListEntryContainer" label="cm.general.PublishingQueue">
+      <field name="googleNewsSitemapPublishingQueue" input-template="p.ContentListEntryContainer" label="com.atex.plugins.seoplugin.SitemapConfigField.queues.list">
         <param name="showCutButton">false</param>
         <param name="contentListName">googleNewsSitemapPublishingQueue</param>
         <param name="showActionButtonsInViewMode">false</param>

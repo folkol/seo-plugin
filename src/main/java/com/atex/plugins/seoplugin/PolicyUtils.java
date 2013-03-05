@@ -10,7 +10,7 @@ import com.polopoly.cm.app.policy.SingleValued;
 import com.polopoly.cm.policy.Policy;
 
 /**
- * Utility class for accessing child policies without having to write too much code.
+ * Utility class for accessing child policies with common error handling and fall backs.
  * @author sarasprang
  */
 public class PolicyUtils {
@@ -55,7 +55,7 @@ public class PolicyUtils {
     }
 
     /**
-     * Utility method to check if checkbox is checked or default value if missing
+     * Utility method to check if check box is checked or default value if missing
      * 
      * @param defaultValue value of the boolean if no other found.
      * @param policy the policy to get the list from

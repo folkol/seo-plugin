@@ -1,7 +1,9 @@
 package com.atex.plugins.seoplugin;
 
-import java.util.Date;
-
+/**
+ * ModelTypeDescription interface to expose Google News sitemap specific data in model.
+ * @author sarasprang
+ */
 public interface GoogleNewsSitemapModelTypeDescription {
 
     /**
@@ -26,13 +28,13 @@ public interface GoogleNewsSitemapModelTypeDescription {
     public String getAccess();
 
     /**
-     * Article publication date. Please ensure that you give
+     * Article publication date in long value. Please ensure that you give
      * the original date and time at which the article was published on your
      * site; do not give the time at which the article was added to your Sitemap.
      * 
-     * @return publication date.
+     * @return publication date as long or -1 to omit.
      */
-    public Date getPublishedDate();
+    public long getPublishingDateTime();
 
     /**
      * A comma-separated list of keywords describing the topic of the article.

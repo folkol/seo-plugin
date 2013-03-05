@@ -12,15 +12,20 @@
 #set($entry = $contentEntry.content)
 <url>
 ## URLs are escaped by polopoly. We do not need to do that here.
-#set($childPath = $tool_path.concatPath($entry.parentIds, $entry.contentId))
-<loc>#link({"path": $childPath, "htmlEncodeLink": "true", "requestAttribs": {"localLinksEnabled": false}, "":""})</loc>
+#set($linkContext = $m.request.httpRequest.attributes.linkContext)
+#if ($linkContext)
+#set($contentPath = $tool_path.concat($tool_path.getPathToRoot($linkContext.contentId), $entry.contentId))
+#else
+#set($contentPath = $entry.parentIds)
+#end
+<loc>#link({"path": $contentPath, "htmlEncodeLink": "true", "requestAttribs": {"localLinksEnabled": false}, "":""})</loc>
 <news:news>
 <news:publication>
 <news:name>$!publicationName</news:name>
 <news:language>en</news:language>
 </news:publication>
 ##Hardcoded 'Z' time zone passing in UTC timezone populated by controller
-#if($entry.publishedDate)<news:publication_date>$date.format("yyyy-MM-dd'T'HH:mm:ss", $entry.publishedDate, $locale, $timezone)Z</news:publication_date>#end
+#if($entry.publishingDateTime && $entry.publishingDateTime > 0)<news:publication_date>$date.format("yyyy-MM-dd'T'HH:mm:ss", $entry.publishingDateTime, $locale, $timezone)Z</news:publication_date>#end
 #if("$!entry.title" != "")<news:title>$!entry.title</news:title>#end
 #if("$!entry.access" != "")<news:access>$!entry.access</news:access>#end
 #if("$!entry.keywords" != "")<news:keywords>$!entry.keywords</news:keywords>#end

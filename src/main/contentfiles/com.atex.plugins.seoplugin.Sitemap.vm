@@ -1,11 +1,11 @@
 #if("$!sitemapMode" == "news_sitemap")
 ##Render Google News sitemap
-#renderwithfallback({"content": "com.atex.plugins.seoplugin.GoogleNewsSitemap.ot", "":""})
+#renderwithfallback({"content": $content, "outputTemplate":"com.atex.plugins.seoplugin.GoogleNewsSitemap.ot", "":""})
 ##Something went wrong
 #end
 #else
 ##Render Regular sitemap
-#renderwithfallback({"content": "com.atex.plugins.seoplugin.RegularSitemap.ot", "":""})
+#renderwithfallback({"content": $content, "outputTemplate":"com.atex.plugins.seoplugin.RegularSitemap.ot", "":""})
 ##Something went wrong
 #end
 #end

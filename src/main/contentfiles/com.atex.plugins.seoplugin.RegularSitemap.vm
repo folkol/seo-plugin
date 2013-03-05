@@ -17,8 +17,13 @@ $!sitemapcontent.manualXML
 #set($entry = $contentEntry.content)
 <url>
 ## URLs are escaped by polopoly. We do not need to do that here.
-#set($childPath = $tool_path.concatPath($entry.parentIds, $entry.contentId))
-<loc>#link({"path": $childPath, "htmlEncodeLink": "true", "requestAttribs": {"localLinksEnabled": false}, "":""})</loc>
+#set($linkContext = $m.request.httpRequest.attributes.linkContext)
+#if ($linkContext)
+#set($contentPath = $tool_path.concat($tool_path.getPathToRoot($linkContext.contentId), $entry.contentId))
+#else
+#set($contentPath = $entry.parentIds)
+#end
+<loc>#link({"path": $contentPath, "htmlEncodeLink": "true", "requestAttribs": {"localLinksEnabled": false}, "":""})</loc>
 </url>
 #end
 #end
