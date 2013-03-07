@@ -1,8 +1,6 @@
 # seo-plugin
 Polopoly plugin to provide basic SEO techniques (meta-data, sitemap and robots.txt) as settings on Site and Page level for a project.
 
-{:with_toc}
-
 ## What is SEO?
 SEO means Search Engine Optimization and is a very wide term to group technologies that simplifies life for search engines and the users of such.
 Using the SEO plugin does NOT mean that your site automatically gets Site Engine Optimized. <u>All companies have different strategies when it comes to SEO.</u>
