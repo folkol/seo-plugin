@@ -39,7 +39,7 @@ but it might be even prettier if you wrap each of these SEO techniques in their 
     </layout>
     ...
     
-*Since we don't want to override the site policy, the Java code makes some assumptions on the location of this field. It's important it's on the site template and that the name of the field is **sitemapConfig**.*
+*Since we don't want to override the site policy, the Java code makes some assumptions on the location of this field. It's important it's on the site template and that the name of the field is **sitemapConfig** .*
 
 In order for the sitemaps to be available on /sitemap.xml you need to modify your web.xml and add the sitemap filter that comes with the plugin. The filter definition is available in a file called *web-fragment.xml* but you can also take it from here.
 
@@ -77,7 +77,7 @@ To add the Robots.txt configuration section to your site, you need to add that a
     </layout>
     ...
     
-*Since we don't want to override the site policy, the Java code makes some assumptions on the location of this field. It's important it's on the site template and that the name of the field is **robotsConfig**.*
+*Since we don't want to override the site policy, the Java code makes some assumptions on the location of this field. It's important it's on the site template and that the name of the field is **robotsConfig** .*
 
 In order to get the Robots.txt file available at /robots.txt you need to modify your web.xml and add the robots.txt filter definition. The filter definition is available in a file called *web-fragment.xml* but you can also take it from here.
 
@@ -115,6 +115,8 @@ To add the Meta data configuration section to the site, you need to add that as 
       <field name="metadataConfig" input-template="com.atex.plugins.seoplugin.MetaDataConfigField" label="" />
     </layout>
     ...
+
+*Since we don't want to override the site policy, the Java code makes some assumptions on the location of this field. It's important it's on the site template and that the name of the field is **metadataConfig** .*
 
 Once you have the configuration you need to add the output of this to your pagelayout.vm file, in Greenfield Times, this would be defaultpagelayout.vm.
 Replace your current meta data (title, description, keywords) with:
