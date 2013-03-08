@@ -67,6 +67,8 @@ but is located at /news-sitemap.xml by default.
 
 **Note:** For an article to expose all fields available for the Google News sitemap, implement the GoogleNewsSitemapModelTypeDescription on your article policy.
 
+When all is setup you might want to [expose your sitemap in your robots.txt file](http://support.google.com/webmasters/bin/answer.py?hl=en&answer=183669).
+
 ### 2. Robots.txt
 To add the Robots.txt configuration section to your site, you need to add that as well to your template, having both sitemaps and this in the same tab would mean having this in your template:
 
@@ -174,6 +176,8 @@ The above setup results in the following output.
 
 **Note:** The Robots.txt field can be inherited and overridden by sub pages, if the field is empty for that sub page, it will look for the setting on the parent page/site.
 
+You can also [expose your sitemaps in your robots.txt file](http://support.google.com/webmasters/bin/answer.py?hl=en&answer=183669).
+
 The following could be a good default (on your site) pending on your project, for example 'search-results' should be the path to your search result page.
 
     User-agent: *
@@ -215,6 +219,7 @@ expose themselves for meta data extraction.
 * [Regular sitemaps](http://www.sitemaps.org/)
 * [Google News sitemaps](http://support.google.com/webmasters/bin/answer.py?hl=en&answer=75717&topic=10078&ctx=topic)
 * [Robots.txt](http://www.robotstxt.org/)
+* [Expose your sitemaps in your robots.txt file](http://support.google.com/webmasters/bin/answer.py?hl=en&answer=183669)
 
 TODO's
 ======
