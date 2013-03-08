@@ -39,7 +39,7 @@ but it might be even prettier if you wrap each of these SEO techniques in their 
     </layout>
     ...
     
-*Since we don't want to override the site policy, the Java code makes some assumptions on the location of this field. It's important it's on the site template and that the name of the field is **sitemapConfig** .*
+*Since we don't want to override the site policy, the Java code makes some assumptions on the location of this field. It's important it's on the site template and that the name of the field is <b>sitemapConfig</b> .*
 
 In order for the sitemaps to be available on /sitemap.xml you need to modify your web.xml and add the sitemap filter that comes with the plugin. The filter definition is available in a file called *web-fragment.xml* but you can also take it from here.
 
@@ -77,7 +77,7 @@ To add the Robots.txt configuration section to your site, you need to add that a
     </layout>
     ...
     
-*Since we don't want to override the site policy, the Java code makes some assumptions on the location of this field. It's important it's on the site template and that the name of the field is **robotsConfig** .*
+*Since we don't want to override the site policy, the Java code makes some assumptions on the location of this field. It's important it's on the site template and that the name of the field is <b>robotsConfig</b> .*
 
 In order to get the Robots.txt file available at /robots.txt you need to modify your web.xml and add the robots.txt filter definition. The filter definition is available in a file called *web-fragment.xml* but you can also take it from here.
 
@@ -116,7 +116,7 @@ To add the Meta data configuration section to the site, you need to add that as 
     </layout>
     ...
 
-*Since we don't want to override the site policy, the Java code makes some assumptions on the location of this field. It's important it's on the site template and that the name of the field is **metadataConfig** .*
+*Since we don't want to override the site policy, the Java code makes some assumptions on the location of this field. It's important it's on the site template and that the name of the field is <b>metadataConfig</b> .*
 
 Once you have the configuration you need to add the output of this to your pagelayout.vm file, in Greenfield Times, this would be defaultpagelayout.vm.
 Replace your current meta data (title, description, keywords) with:
@@ -135,15 +135,81 @@ Replace your current meta data (title, description, keywords) with:
 configuration will be used instead. The inheritance will check all parent pages until it reaches a site. If no configuration found the site name will be used for title as a last fall back. **You most likely want to add this setting to the
 page, otherwise it will only use the site's meta data on pages.**
 
-An article page (or any content implementing the MetaDataModelTypeDescription interface) will expose it's own meta data. This can be manipulated in the MetaDataController to for example, like it does currently, add publish date to the page title.
+An article page (or any content implementing the **MetaDataModelTypeDescription** interface) will expose it's own meta data. This can be manipulated in the MetaDataController to for example, like it does currently, add publish date to the page title.
 
 ## User Guide
+The location of these settings might vary pending on where you place them in the site/page templates.
 
 ### 1. Regular and Google News sitemap
+The regular sitemap comes with two flavors.
+* The manual, which is just a plain text area that can take anything, if for example, you want your sitemap to contain URLs not hosted within Polopoly.
+* Publishing queues, which are just lists of anything. These lists will be traversed to generate the URLs to the content within.
+
+These flavors can be enabled and disabled asynchronously using check boxes, if for example you want to quickly disable the manual section without removing the content.
+![Regular sitemap configuration](src/docs/screenshots/regular_sitemap_config.png)
+
+The above setup results in the following output.
+![Regular sitemap output](src/docs/screenshots/regular_sitemap_output.png)
+
+The Google News sitemap is only meant to support articles and works in the same fashion as the Publishing queue flavor of the regular sitemap. The article policy (policies) should implement the GoogleNewsSitemapModelTypeDescription interface to properly 
+expose the required data in the sitemap. The publishing queue could for example be search driven to provide your sites latest articles.
+
+The Google News sitemap output can quickly be disabled using the checkbox. If disabled the sitemap will appear empty.
+![Google News sitemap configuration](src/docs/screenshots/googlenews_sitemap_config.png)
+
+The above setup results in the following output.
+![Google News sitemap output](src/docs/screenshots/googlenews_sitemap_output.png)
 
 ### 2. Robots.txt
+The purpose of the Robots.txt is mostly to tell search engine crawlers what locations of your site that should be ignored. For example you probably don't want your search result or mobile pages to appear in Google searches.
+This setting usually don't change very often and you usually want to allow crawlers everywhere with some exceptions. That's why it's currently just a simple text area.
+
+**Note:** If you leave this field empty the Robots.txt page will disallow crawlers on all pages.
+
+![Robots.txt configuration](src/docs/screenshots/robots_config.png)
+
+The above setup results in the following output.
+
+![Robots.txt output](src/docs/screenshots/robots_output.png)
+
+**Note:** The Robots.txt field can be inherited and overridden by sub pages, if the field is empty for that sub page, it will look for the setting on the parent page/site.
+
+The following could be a good default (on your site) pending on your project, for example 'search-results' should be the path to your search result page.
+
+    User-agent: *
+    Allow: /
+    Disallow: /mobile/
+    Disallow: /search-results/
+    Disallow: /poll/
+    Disallow: /logger/
+    Disallow: /cmlink/
+    Disallow: /cm/
+    Disallow: /error/
+    Disallow: /errorpages/
+    Disallow: /content/
+    Disallow: /captcha/
+    Disallow: /membership/
+    Disallow: /blogimageupload/
+    Disallow: /polopolydevelopment/
+    Disallow: /status/
+    Disallow: /redirect/
+    User-agent: Googlebot-Mobile
+    Allow: /mobile/
+    User-agent: Googlebot-Image
+    Allow: /polopoly_fs/
+    User-agent: Twitterbot
+    Allow: /
 
 ### 3. Meta data
+This feature simply allows for 3 fields to use inheritance to expose meta data in your layout.
+
+![Meta Data configuration](src/docs/screenshots/metadata_config.png)
+
+For example, the page name in Polopoly is not always what you want to use in the title of your page. In stead of 'Greenfield Times' you might want to have 'Greenfield Times - Bringing you yesterdays news today!', this field allows for that and for your sub pages to 
+inherit or override them.
+
+**Note:** If there's no data present in these fields and you've added the output of this feature to your page layout, you will only get the name of the page/site as a title. Also, your article policy/policies should implement the *MetaDataModelTypeDescription* interface to 
+expose themselves for meta data extraction. 
 
 ## References
 * [Regular sitemaps](http://www.sitemaps.org/)
@@ -153,8 +219,8 @@ An article page (or any content implementing the MetaDataModelTypeDescription in
 TODO's
 ======
 * <del>Need to add better documentation ;)</del>
-* Need to add usage instructions with screenshots
-* Need to add language keys for meta-data
+* <del>Need to add usage instructions with screenshots</del>
+* <del>Need to add language keys for meta-data</del>
 * Some tests would be nice
 * Move some classes for better structure
 * Make the meta data inclusion to a one liner
