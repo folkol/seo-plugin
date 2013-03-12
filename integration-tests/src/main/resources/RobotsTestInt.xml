@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template-definition version="1.0" xmlns="http://www.polopoly.com/polopoly/cm/app/xml">
+  <output-template name="p.siteengine.Site.ot" input-template="p.siteengine.SiteOutputTemplate">
+    <content-xml>
+      <component group="output/modelKeyMode" name="selected">null</component>
+      <component group="preview/controller" name="value">com.polopoly.siteengine.preview.PreviewControllerStandard</component>
+    </content-xml>
+  </output-template>
+
+  <input-template name="test.seoplugin.Site" label="cm.template.p.siteengine.Site">
+    <policy>com.polopoly.siteengine.structure.SitePolicy</policy>
+    <editor>com.polopoly.cm.app.widget.OTopPolicyWidget</editor>
+    <viewer>com.polopoly.cm.app.widget.OTopPolicyWidget</viewer>
+    <editor contextName="orchid_TOCENTRY">com.polopoly.siteengine.standard.contentlist.OContentListEntryBasePolicyWidget</editor>
+    <viewer contextName="orchid_TOCENTRY">com.polopoly.siteengine.standard.contentlist.OContentListEntryBasePolicyWidget</viewer>
+    <type>Department</type>
+    <param name="templateIcon">folder_site.png</param>
+    <param name="ViewState_insert">false</param>
+    <param name="ViewState_refresh">true</param>
+    <param name="EditState_saveAndClose">true</param>
+    <param name="EditState_saveAndInsert">false</param>
+    <param name="EditState_saveAndFastInsert">false</param>
+    <param name="EditState_saveAndView">true</param>
+    <param name="EditNewState_saveAndClose">false</param>
+    <param name="EditNewState_saveAndInsert">false</param>
+    <param name="EditNewState_saveAndFastInsert">true</param>
+    <param name="EditNewState_saveAndView">false</param>
+    <content-list name="default" input-template="p.siteengine.StructureContentListWrapper.it" />
+    <content-list name="css" input-template="p.siteengine.StylesheetContentListWrapper" />
+    <content-list name="feeds" input-template="p.siteengine.FeedContentListWrapper" />
+    <content-list name="articles" input-template="p.siteengine.ArticlesContentListWrapper" />
+    <content-list name="resources" input-template="p.siteengine.ResourcesContentListWrapper" />
+    <content-list name="p.site.Categorization" input-template="p.CategorizationContentListWrapper" />
+
+    <field name="sitemapConfig" input-template="com.atex.plugins.seoplugin.SitemapConfigField" label="" />
+
+    <layout name="menu" input-template="p.AjaxPageMenu">
+      <layout name="contents" input-template="p.Page" label="cm.general.StartPage">
+        <field name="name" input-template="p.ContentName" label="cm.label.Name" required="true" />
+        <field name="pageLayout" input-template="p.SelectableField" label="cm.general.PageLayout">
+          <param name="AJAX">true</param>
+          <param name="fieldSelectorClass">com.polopoly.siteengine.selector.FieldSelectorLayout</param>
+          <param name="fieldSelector.entryWidget">com.polopoly.siteengine.selector.OFieldSelectorContentEntryWidget</param>
+          <param name="contentListName">pageLayouts</param>
+          <param name="showFieldset">false</param>
+          <idparam name="globalItemsDepartment">
+            <externalid>p.siteengine.PageTypes.d</externalid>
+          </idparam>
+        </field>
+      </layout>
+      <layout name="pages" input-template="p.Page" label="cm.general.SubPages">
+        <param name="lazyInit">true</param>
+        <layout name="newsitepageorarticle" input-template="p.LabeledSection" label="cm.general.SubSitesAndPages">
+          <field name="pageContentCreator" input-template="p.ContentCreator">
+            <param name="createWithSecurityParent">true</param>
+            <param name="securityParentAlias">content</param>
+            <param name="insertTargetAlias">content</param>
+            <param name="askInsertTarget">false</param>
+            <param name="insertionContentListName">default</param>
+            <param name="askInsertionContentListName">false</param>
+            <param name="inlineHelp">true</param>
+            <param name="showCategorySelectWithOneCategory">false</param>
+            <param name="concatenateCategories">true</param>
+            <help>cm.template.p.siteengine.Site.SubSitesAndPagesHelp</help>
+            <idparam name="templateRoot">
+              <externalid>p.siteengine.StructureTemplates.d</externalid>
+            </idparam>
+          </field>
+          <field name="pages" input-template="p.ContentListEntryContainer" label="">
+            <param name="contentListName">default</param>
+            <param name="showCheckboxes">true</param>
+          </field>
+        </layout>
+        
+        <layout name="landingpages" input-template="p.LabeledSection" label="cm.template.p.siteengine.LandingPages.name">          
+          <field name="landingPageContentCreator" input-template="p.ContentCreator" label="">
+            <param name="createWithSecurityParent">true</param>
+            <param name="securityParentAlias">content</param>
+            <param name="insertTargetAlias">content</param>
+            <param name="askInsertTarget">false</param>
+            <param name="insertionContentListName">landingPages</param>
+            <param name="askInsertionContentListName">false</param>
+            <param name="showCategorySelectWithOneCategory">false</param>
+            <param name="inlineHelp">true</param>
+            <help>cm.template.p.siteengine.LandingPageTab.helpText</help>
+            <idparam name="templateRoot">
+              <externalid>p.siteengine.LandingPageTemplatesCategory.d</externalid>
+            </idparam>
+          </field>
+          <field name="landingPages" input-template="p.ContentListEntryContainer" label="">
+            <param name="contentListName">landingPages</param>
+            <param name="showCheckboxes">true</param>
+          </field>
+        </layout>
+      </layout>
+      
+      <layout name="resources" input-template="p.Page" label="cm.general.ContentAuthoring">
+        <layout name="resourcesMenu" input-template="p.AjaxPageMenu">
+          <layout name="resourceList" input-template="p.Page" label="cm.general.LocalContent">
+            <param name="lazyInit">true</param>
+            <layout name="localContentSection" input-template="p.LabeledSection" label="cm.general.ListLocalContent">
+              <field name="contentCreator" input-template="p.ContentCreator" label="">
+                <param name="createWithSecurityParent">true</param>
+                <param name="securityParentAlias">content</param>
+                <param name="insertTargetAlias">content</param>
+                <param name="askInsertTarget">false</param>
+                <param name="insertionContentListName">resources</param>
+                <param name="askInsertionContentListName">false</param>
+                <param name="showCategorySelectWithOneCategory">false</param>
+                <param name="askContentListPosition">false</param>
+                <param name="insertPosition">top</param>
+                <param name="inlineHelp">true</param>
+                <help>cm.template.p.siteengine.Site.LocalContentListHelp</help>
+                <idparam name="templateRoot">
+                  <externalid>p.siteengine.ResourceTemplates.d</externalid>
+                </idparam>
+              </field>
+              <field name="resources" input-template="p.ContentListEntryContainer" label="">
+                <param name="contentListName">resources</param>
+              </field>
+            </layout>
+          </layout>
+          <layout name="localSearchLayout" input-template="p.Page" label="cm.general.LocalSearch">
+            <param name="lazyInit">true</param>
+            <layout name="localSearchLayoutSec" input-template="p.LabeledSection" label="cm.general.LocalSearch">
+              <field name="localContentSearch" input-template="p.solr.LocalContentSearch" label=" " />
+            </layout>
+          </layout>
+        </layout>
+      </layout>
+      
+      <layout name="sources" input-template="p.Page" label="cm.label.Sources">
+        <param name="lazyInit">true</param>
+        <layout name="sourceslistsection" input-template="p.LabeledSection" label="cm.general.SourcesContentList">
+          <field name="sourcesContentCreator" input-template="p.ContentCreator" label="">    		
+            <param name="createWithSecurityParent">true</param>
+            <param name="securityParentAlias">content</param>
+            <param name="insertTargetAlias">content</param>
+            <param name="askInsertTarget">false</param>
+            <param name="insertionContentListName">sources</param>
+            <param name="askInsertionContentListName">false</param>
+            <param name="showCategorySelectWithOneCategory">false</param>
+            <param name="askContentListPosition">false</param>
+            <param name="insertPosition">top</param>
+            <param name="inlineHelp">true</param>
+            <help>cm.template.p.siteengine.Site.SourcesListHelp</help>
+            
+            <idparam name="templateRoot">
+              <externalid>p.siteengine.SourcesRepositoryTemplates</externalid>
+            </idparam>
+          </field>
+          <field name="sources" input-template="p.ContentListEntryContainer" label="">
+            <param name="contentListName">sources</param>
+          </field>
+        </layout>
+      </layout>  
+      
+      <layout name="css" input-template="p.Page" label="cm.general.Stylesheets">
+        <param name="lazyInit">true</param>
+        <layout name="csssection" input-template="p.LabeledSection" label="cm.general.Stylesheets">
+          <field name="stylesheetContentCreator" input-template="p.SimpleContentCreator">
+            <param name="createLabel">cm.action.NewStylesheet</param>
+            <param name="major">7</param>
+            <idparam name="inputTemplateId">
+              <externalid>p.siteengine.Stylesheet</externalid>
+            </idparam>
+            <param name="createWithSecurityParent">true</param>
+            <param name="securityParentAlias">content</param>
+            <param name="insertTargetAlias">content</param>
+            <param name="askInsertTarget">false</param>
+            <param name="insertionContentListName">css</param>
+            <param name="askInsertionContentListName">false</param>
+            <param name="showCategorySelectWithOneCategory">false</param>
+            <param name="askContentListPosition">false</param>
+            <param name="insertPosition">top</param>
+            <param name="EditNewState_saveAndView">false</param>
+          </field>
+          <field name="css" input-template="p.ContentListEntryContainer" label="">
+            <param name="contentListName">css</param>
+          </field>
+        </layout>
+      </layout>
+      
+      <layout name="feeds" input-template="p.Page" label="cm.general.Feeds">
+        <param name="lazyInit">true</param>
+        <layout name="feedsection" input-template="p.LabeledSection" label="cm.general.Feeds">
+          <field name="feedContentCreator" input-template="p.ContentCreator" label="">
+            <param name="createWithSecurityParent">true</param>
+            <param name="securityParentAlias">content</param>
+            <param name="insertTargetAlias">content</param>
+            <param name="askInsertTarget">false</param>
+            <param name="insertionContentListName">feeds</param>
+            <param name="askInsertionContentListName">false</param>
+            <param name="showCategorySelectWithOneCategory">false</param>
+            <param name="askContentListPosition">false</param>
+            <param name="insertPosition">top</param>
+            <idparam name="templateRoot">
+              <externalid>p.siteengine.FeedTemplates</externalid>
+            </idparam>
+          </field>
+          <field name="feeds" input-template="p.ContentListEntryContainer" label="">
+            <param name="contentListName">feeds</param>
+          </field>
+        </layout>
+      </layout>
+      
+      <layout name="settings" input-template="p.Page" label="cm.general.Advanced">
+        <layout name="settingsmenu" input-template="p.AjaxPageMenu">
+          <layout name="general" input-template="p.Page" label="cm.general.General">
+            <param name="lazyInit">true</param>
+            <field name="pathsegment" input-template="p.TextInput" label="cm.template.p.siteengine.Site.PathSegment">
+              <param name="inlineHelp">true</param>
+              <help>cm.template.p.siteengine.Site.PathSegmentHelp</help>
+            </field>
+            <field name="cacheTime" input-template="p.siteengine.config.CacheTimeSelector">
+              <param name="defaultValue">60</param>
+            </field>
+            <field name="localizedstrings" input-template="p.ContentTreeSelect" label="cm.template.p.siteengine.Site.LocalizedStringsBundle">
+              <param name="inlineHelp">true</param>
+              <help>cm.template.p.siteengine.Site.LocalizedStringsBundleHelp</help>
+              <idparam name="rootContent">
+                <major>Department</major>
+                <externalid>p.siteengine.LocalizedStrings.d</externalid>
+              </idparam>
+              <param name="multipleSelect">false</param>
+              <param name="allowDepartments">false</param>
+              <param name="allowArticles">true</param>
+              <param name="width">314</param>
+              <param name="height">120</param>
+            </field>
+            <field name="securityparent" input-template="p.SecurityParentSelect" label="cm.template.p.siteengine.Site.ParentPageSite">
+              <param name="width">314</param>
+              <param name="height">120</param>
+            </field>
+            <field name="homeDepartment" input-template="p.HomeDepartmentCreator" label="cm.general.IsHomeDepartment">
+              <param name="inlineHelp">true</param>
+              <help>cm.template.p.siteengine.Site.IsHomeDepartmentHelp</help>
+            </field>
+            <!-- The external id field is only here to enable xml export with the export servlet.
+                 Remove in production use. -->
+            <field name="id" input-template="p.ExternalId" label="cm.general.ExternalIdForExport">
+              <param name="maxlength">100</param>
+            </field>
+            <field name="inherit" input-template="p.WorkflowToInheritSelect" label="cm.template.p.siteengine.Site.WorkflowContentDepartment">
+              <param name="hasNoneOption">true</param>
+            </field>
+            <field name="disallowIndexing" input-template="p.Checkbox" label="p.siteengine.Page.disallowIndexing" />
+          </layout>
+          <layout name="aliases" input-template="p.Page" label="cm.label.site.SiteAliases">
+            <param name="lazyInit">true</param>
+            <field name="domainAlias" input-template="p.VirtualDomainCreator" label="cm.label.site.DomainAliasCreator">
+              <param name="aliasListWidth">400</param>
+            </field>
+            <layout name="aliascomment" input-template="p.Comment" label=" ">
+              <param name="comment">cm.label.site.WebAliasComment</param>
+            </layout>
+            <field name="aliasdefcontent" input-template="p.ContentSingleSelect" label="cm.label.site.WebAliasContent" />
+            <field name="aliases" input-template="p.WebAliasEditor" label="cm.label.site.WebAliasEditor" />
+          </layout>
+          <layout name="layoutRepository" input-template="p.Page" label="cm.general.LocalLayouts">
+            <param name="lazyInit">true</param>
+            <field name="pageLayouts" input-template="p.ContentListEntryContainer" label="cm.general.PageLayouts">
+              <param name="contentListName">pageLayouts</param>
+            </field>
+          </layout>
+          <layout name="deepcopy" input-template="p.Page" label="cm.action.Deepcopy">
+            <param name="lazyInit">true</param>
+            <field name="deepcopyarea" input-template="p.DeepCopy">
+              <param name="targetDepartmentRoot">p.siteengine.Sites.d</param>
+            </field>
+          </layout>
+          <layout name="deepcopyXML" input-template="p.Page" label="cm.action.DeepcopyXML">
+            <param name="lazyInit">true</param>
+            <field name="deepcopyxmlarea" input-template="p.DeepCopyXML"/>
+          </layout>
+          <layout name="siteCategorization" input-template="p.Page" label="cm.general.Categorization">
+            <param name="lazyInit">true</param>
+            <field name="categorization" input-template="p.siteengine.Content.Categorization" label="cm.general.Categorization">
+              <param name="categoryDimensionsAlias">self</param>
+            </field>
+          </layout>
+          <layout name="siteMembership" input-template="p.Page" label="cm.template.p.siteengine.Site.Membership">
+            <param name="lazyInit">true</param>
+            <field name="membershipConfiguration" input-template="p.siteengine.Site.MembershipConfiguration" />
+          </layout>
+          <layout name="batchOperationsPage" input-template="p.Page" label="cm.template.p.siteengine.Site.BatchOperations">        
+            <param name="lazyInit">true</param>
+            <field name="batchOperations" input-template="p.siteengine.Site.BatchOperations" />
+          </layout>
+          <layout name="categorizationConfiguration" input-template="p.Page" label="cm.template.p.siteengine.Site.CategorizationConfiguration">
+            <param name="lazyInit">true</param>
+            <field name="categoryCreator" input-template="p.ContentCreator"
+                   label="cm.categorization.CreateCategorization">
+              <param name="createWithSecurityParent">true</param>
+              <param name="securityParentAlias">content</param>
+              <param name="insertTargetAlias">content</param>
+              <param name="askInsertTarget">false</param>
+              <param name="askContentListPosition">false</param>
+              <param name="insertPosition">top</param>
+              <param name="askInsertionContentListName">false</param>
+              <param name="insertionContentListName">p.site.Categorization</param>
+              <param name="categoryMajor0">Department</param>
+              <param name="categoryLabel0">Categorization</param>
+              <param name="showCategorySelectWithOneCategory">false</param>
+              <idparam-list name="categoryList0">
+                <contentid>
+                  <externalid>p.CategoryTree</externalid>
+                </contentid>
+                <contentid>
+                  <externalid>p.TagCategory</externalid>
+                </contentid>
+                <contentid>
+                  <externalid>p.CategoryDimensions</externalid>
+                </contentid>
+              </idparam-list>
+            </field>
+            
+            <field name="categorizationContentList" input-template="p.ContentListEntryContainer" label="cm.label.Categorizations">
+              <param name="contentListName">p.site.Categorization</param>
+            </field>
+          </layout>
+        </layout>
+      </layout>
+    </layout>
+    <output-templates mode="www">
+      <id>p.siteengine.Site.ot</id>
+    </output-templates>
+  </input-template>
+</template-definition>
