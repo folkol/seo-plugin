@@ -22,7 +22,7 @@
   <groupId>com.atex.plugins</groupId>
   <artifactId>seo-plugin</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
 
   <!-- This could be replaced by parent properties -->
   <properties>
@@ -67,7 +67,13 @@
     <dependency>
       <groupId>com.atex.plugins</groupId>
       <artifactId>baseline</artifactId>
-      <version>2.0.1</version>
+      <version>2.0.5</version>
+    </dependency>
+    <dependency>
+      <groupId>com.atex.plugins</groupId>
+      <artifactId>baseline</artifactId>
+      <version>2.0.5</version>
+      <classifier>contentdata</classifier>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
