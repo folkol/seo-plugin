@@ -279,10 +279,6 @@
               <param name="categoryDimensionsAlias">self</param>
             </field>
           </layout>
-          <layout name="siteMembership" input-template="p.Page" label="cm.template.p.siteengine.Site.Membership">
-            <param name="lazyInit">true</param>
-            <field name="membershipConfiguration" input-template="p.siteengine.Site.MembershipConfiguration" />
-          </layout>
           <layout name="batchOperationsPage" input-template="p.Page" label="cm.template.p.siteengine.Site.BatchOperations">        
             <param name="lazyInit">true</param>
             <field name="batchOperations" input-template="p.siteengine.Site.BatchOperations" />
