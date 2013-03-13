@@ -12,22 +12,20 @@ import com.polopoly.cm.ExternalContentId;
 import com.polopoly.cm.client.CMException;
 import com.polopoly.cm.policy.Policy;
 import com.polopoly.cm.policy.PolicyCMServer;
-import com.polopoly.ps.webtest.WebClientHelper;
+import com.polopoly.ps.psselenium.SimpleWebDriverTestBase;
 import com.polopoly.testbase.ImportTestContent;
 import com.polopoly.testbase.TestBaseRunner;
 
 @RunWith(TestBaseRunner.class)
-public class RobotsTestInt {
+@ImportTestContent
+public class RobotsTestInt extends SimpleWebDriverTestBase {
 
     @Inject
     private PolicyCMServer cmServer;
 
     private ContentId contentId;
 
-    private WebClientHelper webClientHelper = new WebClientHelper();
-
     @Before
-    @ImportTestContent(once=true, waitUntilContentsAreIndexed={"test.seoplugin.Site"})
     public void createTestSite() throws CMException {
         Policy createContent = cmServer.createContent(2, new ExternalContentId("test.seoplugin.Site"));
         cmServer.commitContent(createContent);
@@ -35,8 +33,12 @@ public class RobotsTestInt {
     }
 
     @Test
-    public void testRobotsTXTPresent() throws CMException {
-        String html = webClientHelper.doGET("/cmlink/" + contentId.getContentIdString() + "/robots.txt").getContentAsString();;
+    public void testRobotsTXTPresent() throws Exception {
+        String html = "User-agent: *\nDisallow: /";
+
+        guiAgent().agentLogin().loginAsSysadmin();
+        guiAgent().agentContentNavigator().editContent(contentId.getContentIdString());
+//        guiAgent().agentInput().typeInTextarea("robots", "Hej hej")
 
         assertTrue("The robots.txt did not specify useragents", html.contains("User-agent: *"));
         assertTrue("The robots.txt did not disallow listing", html.contains("Disallow: /"));

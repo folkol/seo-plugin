@@ -32,11 +32,15 @@
     <content-list name="resources" input-template="p.siteengine.ResourcesContentListWrapper" />
     <content-list name="p.site.Categorization" input-template="p.CategorizationContentListWrapper" />
 
-    <field name="sitemapConfig" input-template="com.atex.plugins.seoplugin.SitemapConfigField" label="" />
+    <layout name="seoConfiguration" input-template="p.Page" label="SEO">
+      <field name="sitemapConfig" input-template="com.atex.plugins.seoplugin.SitemapConfigField" label="" />
+      <field name="robotsConfig" input-template="com.atex.plugins.seoplugin.RobotsConfigField" label="" />
+      <field name="metadataConfig" input-template="com.atex.plugins.seoplugin.MetaDataConfigField" label="" />
+    </layout>
 
     <layout name="menu" input-template="p.AjaxPageMenu">
       <layout name="contents" input-template="p.Page" label="cm.general.StartPage">
-        <field name="name" input-template="p.ContentName" label="cm.label.Name" required="true" />
+        <field name="name" input-template="p.ContentName" label="cm.label.Name" />
         <field name="pageLayout" input-template="p.SelectableField" label="cm.general.PageLayout">
           <param name="AJAX">true</param>
           <param name="fieldSelectorClass">com.polopoly.siteengine.selector.FieldSelectorLayout</param>
