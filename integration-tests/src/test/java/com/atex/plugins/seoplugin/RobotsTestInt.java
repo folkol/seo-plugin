@@ -1,8 +1,6 @@
 package com.atex.plugins.seoplugin;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
+import static junit.framework.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,17 +17,21 @@ import com.polopoly.testbase.ImportTestContent;
 import com.polopoly.testbase.TestBaseRunner;
 
 @RunWith(TestBaseRunner.class)
-@ImportTestContent(files={"content.xml"},  once=true)
+@ImportTestContent(once = true)
 public class RobotsTestInt extends SimpleWebDriverTestBase {
 
     @Inject
     private PolicyCMServer cmServer;
 
     private Policy testSite;
+    private Policy testPage;
 
     @Before
     public void createTestSite() throws CMException {
-        testSite = cmServer.getPolicy(new ExternalContentId("test.site.site1"));
+        testSite = cmServer.createContent(2, new ExternalContentId("test.seoplugin.Site"));
+        testPage = cmServer.createContent(2, new ExternalContentId("test.seoplugin.Page"));
+        testPage.getContent().setSecurityParentId(testSite.getContentId().getContentId());
+        cmServer.commitContents(new Policy[] {testSite, testPage});
     }
 
     @Test
@@ -58,6 +60,42 @@ public class RobotsTestInt extends SimpleWebDriverTestBase {
         assertFalse("The updated robots.txt still specified all (*) useragents", html.contains("User-agent: *"));
         assertFalse("The updated robots.txt still disallowed everything", html.contains("Disallow: /"));
         assertTrue("The updated robots.txt did not contain the new text", html.contains("Cute Crawler"));
+    }
+
+    @Test
+    public void testPageInheritsAndOverridesParentSiteRobot() throws Exception {
+        WebDriver webDriver = guiAgent().getWebDriver();
+        String magicString = "Cute Crawler";
+        String newRobotText = "# robots.txt for my test site \\n\\nUser-agent: " + magicString + "\\nDisallow: ";
+        String pageRobotOverrideText = "# robots.txt override for my test sub page";
+        String siteId = testSite.getContentId().getContentId().getContentIdString();
+        String pageId = testPage.getContentId().getContentId().getContentIdString();
+        String pageRobotUrl = guiAgent().getBaseURL() + "/cmlink/" + siteId + "/" + pageId + "/robots.txt";
+
+        webDriver.get(pageRobotUrl);
+        String html = webDriver.getPageSource();
+        assertFalse("The default robots.txt should not know anything about the Cute Crawlerª", html.contains(magicString));
+
+        guiAgent().agentLogin().loginAsSysadmin();
+        guiAgent().agentContentNavigator().editContent(siteId);
+        guiAgent().agentCodeMirror().setText("Manual robots.txt section", newRobotText);
+        guiAgent().agentToolbar().clickOnSaveAndView();
+
+        webDriver.get(pageRobotUrl);
+        waitForRobotPropagation(magicString);
+        html = webDriver.getPageSource();
+        assertTrue("The updated robots.txt did not contain the new text", html.contains("Cute Crawler"));
+
+        guiAgent().agentLogin().loginAsSysadmin();
+        guiAgent().agentContentNavigator().editContent(pageId);
+        guiAgent().agentCodeMirror().setText("Manual robots.txt section", pageRobotOverrideText);
+        guiAgent().agentToolbar().clickOnSaveAndView();
+
+        webDriver.get(pageRobotUrl);
+        waitForRobotPropagation(pageRobotOverrideText);
+        html = webDriver.getPageSource();
+        assertFalse("The updated robots.txt still contained the parent text", html.contains("Cute Crawler"));
+        assertTrue("The updated robots.txt did not contain the new text", html.contains(pageRobotOverrideText));
     }
 
     private void waitForRobotPropagation(String magicString) {
