@@ -1,6 +1,8 @@
 package com.atex.plugins.seoplugin;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +19,7 @@ import com.polopoly.testbase.ImportTestContent;
 import com.polopoly.testbase.TestBaseRunner;
 
 @RunWith(TestBaseRunner.class)
-@ImportTestContent
+@ImportTestContent(files={"content.xml"},  once=true)
 public class RobotsTestInt extends SimpleWebDriverTestBase {
 
     @Inject
@@ -27,8 +29,7 @@ public class RobotsTestInt extends SimpleWebDriverTestBase {
 
     @Before
     public void createTestSite() throws CMException {
-        testSite = cmServer.createContent(2, new ExternalContentId("test.seoplugin.Site"));
-        cmServer.commitContent(testSite);
+        testSite = cmServer.getPolicy(new ExternalContentId("test.site.site1"));
     }
 
     @Test
