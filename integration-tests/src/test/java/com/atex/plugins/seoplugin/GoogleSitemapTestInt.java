@@ -5,6 +5,7 @@ import static junit.framework.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.By;
 
 import com.atex.plugins.baseline.collection.PublishingQueuePolicyManual;
 import com.google.inject.Inject;
@@ -16,7 +17,6 @@ import com.polopoly.cm.collections.ContentList;
 import com.polopoly.cm.policy.Policy;
 import com.polopoly.cm.policy.PolicyCMServer;
 import com.polopoly.ps.psselenium.SimpleWebDriverTestBase;
-import com.polopoly.siteengine.structure.PagePolicy;
 import com.polopoly.siteengine.structure.SitePolicy;
 import com.polopoly.testbase.ImportTestContent;
 import com.polopoly.testbase.TestBaseRunner;
@@ -25,70 +25,58 @@ import example.content.article.StandardArticlePolicy;
 
 @RunWith(TestBaseRunner.class)
 @ImportTestContent(files = {"test-template.xml"}, once = true)
-public class SitemapTestInt extends SimpleWebDriverTestBase {
+public class GoogleSitemapTestInt extends SimpleWebDriverTestBase {
 
     @Inject
     private PolicyCMServer cmServer;
 
     private SitePolicy testSite;
-    private PagePolicy testPage, testPage2;
     private PublishingQueuePolicyManual publishingQueue;
     private StandardArticlePolicy testArticle;
+    private StandardArticlePolicy testArticle2;
 
     @Before
     public void createTestSite() throws CMException {
         testSite = (SitePolicy) cmServer.createContent(2, new ExternalContentId("test.seoplugin.Site"));
         ContentId siteId = testSite.getContentId().getContentId();
-        testPage = (PagePolicy) cmServer.createContent(2, siteId, new ExternalContentId("test.seoplugin.Page"));
-        testPage2 = (PagePolicy) cmServer.createContent(2, siteId, new ExternalContentId("test.seoplugin.Page"));
         testArticle = (StandardArticlePolicy) cmServer.createContent(1, siteId, new ExternalContentId("example.StandardArticle"));
+        testArticle2 = (StandardArticlePolicy) cmServer.createContent(1, siteId, new ExternalContentId("example.StandardArticle"));
         publishingQueue = (PublishingQueuePolicyManual) cmServer.createContent(2, siteId, new ExternalContentId("com.atex.plugins.baseline.ContentListPublishingQueue"));
 
         ContentList contentList = publishingQueue.getContentList();
-        contentList.add(0, new ContentReference(testPage.getContentId().getContentId(), null));
-        contentList.add(1, new ContentReference(testPage2.getContentId().getContentId(), null));
-        contentList.add(2, new ContentReference(testArticle.getContentId().getContentId(), null));
+        contentList.add(0, new ContentReference(testArticle.getContentId().getContentId(), null));
+        contentList.add(1, new ContentReference(testArticle2.getContentId().getContentId(), null));
 
         testSite.getContentList("sources").add(0, new ContentReference(publishingQueue.getContentId().getContentId(), null));
 
-        cmServer.commitContents(new Policy[] {testSite, testPage, testPage2, publishingQueue, testArticle});
+        cmServer.commitContents(new Policy[] {testSite, publishingQueue, testArticle, testArticle2});
     }
 
     @Test
-    public void testPublishingQueueBasedSitemapPropagatesToSite() throws Exception {
+    public void testGoogleSitemapPropagatesToSite() throws Exception {
         guiAgent().agentLogin().loginAsSysadmin();
         guiAgent().agentContentNavigator().openContent(publishingQueue.getContentId().getContentId().getContentIdString());
         guiAgent().agentClipboard().copyOpenedContent();
         guiAgent().agentContentNavigator().editContent(testSite.getContentId().getContentId().getContentIdString());
-        guiAgent().agentClipboard().pasteContent("Publishing queues", true);
-        guiAgent().agentInput().checkCheckbox("Use publishing queues");
+
+        guiAgent().getWebDriver().findElement(By.xpath("//h2[text() = 'Use Google News sitemap']/../input[@type = 'checkbox']")).click();
+        guiAgent().getWebDriver().findElement(By.xpath("//h2[text() = 'Google News sitemap']/..//img[contains(@src, 'paste')]/..")).click();
+        guiAgent().agentWait().waitForAjaxPageToLoad();
         guiAgent().agentToolbar().clickOnSaveAndView();
 
-        String sitemapUrl = guiAgent().getBaseURL() + "/cmlink/" + testSite.getContentId().getContentId().getContentIdString() + "/sitemap.xml";
+        String sitemapUrl = guiAgent().getBaseURL() + "/cmlink/" + testSite.getContentId().getContentId().getContentIdString() + "/news-sitemap.xml";
         guiAgent().getWebDriver().get(sitemapUrl);
-        waitForSitemapPropagation("testPage.getContent().getContentId().getContentId().getContentIdString()");
+        waitForSitemapPropagation(testArticle.getContent().getContentId().getContentId().getContentIdString());
         String xmlSource = guiAgent().getWebDriver().getPageSource();
-        assertTrue("The publishing queue based sitemap did not contain the expected page id",
-                xmlSource.contains(testPage.getContent().getContentId().getContentId().getContentIdString()));
-        assertTrue("The publishing queue based sitemap did not contain the expected page id",
-                xmlSource.contains(testPage2.getContent().getContentId().getContentId().getContentIdString()));
-    }
+        assertTrue("The Google News sitemap did not contain the expected articleid",
+                xmlSource.contains(testArticle.getContentId().getContentId().getContentIdString()));
+        assertTrue("The Google News sitemap did not contain the expected articleid",
+                xmlSource.contains(testArticle2.getContentId().getContentId().getContentIdString()));
+        assertTrue("The Google News sitemap did not contain the expected news:news tag",
+                xmlSource.contains("news:news"));
+        assertTrue("The Google News sitemap did not contain the expected tag news:publication_date",
+                xmlSource.contains("news:publication_date"));
 
-    @Test
-    public void testSitemapPropagatesToSite() throws Exception {
-        guiAgent().agentLogin().loginAsSysadmin();
-        guiAgent().agentContentNavigator().editContent(testSite.getContentId().getContentId().getContentIdString());
-        String manualSitemap = "<url><loc>http://localhost:8080/for-urls-possibly-blaha</loc></url>";
-        guiAgent().agentCodeMirror().setText("Manual sitemap section", manualSitemap);
-        guiAgent().agentInput().checkCheckbox("Use manual sitemap");
-        guiAgent().agentToolbar().clickOnSaveAndView();
-
-        String sitemapUrl = guiAgent().getBaseURL() + "/cmlink/" + testSite.getContentId().getContentId().getContentIdString() + "/sitemap.xml";
-        guiAgent().getWebDriver().get(sitemapUrl);
-        waitForSitemapPropagation(manualSitemap);
-        String xmlSource = guiAgent().getWebDriver().getPageSource();
-        assertTrue("The manual sitemap did not contain the expected xml",
-                xmlSource.contains(manualSitemap));
     }
 
     private void waitForSitemapPropagation(String magicString) {

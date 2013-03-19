@@ -17,7 +17,7 @@ import com.polopoly.testbase.ImportTestContent;
 import com.polopoly.testbase.TestBaseRunner;
 
 @RunWith(TestBaseRunner.class)
-@ImportTestContent(once = true)
+@ImportTestContent(files = {"test-template.xml"}, once = true)
 public class RobotsTestInt extends SimpleWebDriverTestBase {
 
     @Inject
