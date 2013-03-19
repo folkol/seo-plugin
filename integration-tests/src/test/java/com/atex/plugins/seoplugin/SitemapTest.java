@@ -25,15 +25,15 @@ import example.content.article.StandardArticlePolicy;
 
 @RunWith(TestBaseRunner.class)
 @ImportTestContent(files = {"test-template.xml"}, once = true)
-public class SitemapTestInt extends SimpleWebDriverTestBase {
+public class SitemapTest extends SimpleWebDriverTestBase {
 
     @Inject
     private PolicyCMServer cmServer;
 
     private SitePolicy testSite;
     private PagePolicy testPage, testPage2;
-    private PublishingQueuePolicyManual publishingQueue;
     private StandardArticlePolicy testArticle;
+    private PublishingQueuePolicyManual publishingQueue;
 
     @Before
     public void createTestSite() throws CMException {
@@ -48,8 +48,6 @@ public class SitemapTestInt extends SimpleWebDriverTestBase {
         contentList.add(0, new ContentReference(testPage.getContentId().getContentId(), null));
         contentList.add(1, new ContentReference(testPage2.getContentId().getContentId(), null));
         contentList.add(2, new ContentReference(testArticle.getContentId().getContentId(), null));
-
-        testSite.getContentList("sources").add(0, new ContentReference(publishingQueue.getContentId().getContentId(), null));
 
         cmServer.commitContents(new Policy[] {testSite, testPage, testPage2, publishingQueue, testArticle});
     }
@@ -72,6 +70,8 @@ public class SitemapTestInt extends SimpleWebDriverTestBase {
                 xmlSource.contains(testPage.getContent().getContentId().getContentId().getContentIdString()));
         assertTrue("The publishing queue based sitemap did not contain the expected page id",
                 xmlSource.contains(testPage2.getContent().getContentId().getContentId().getContentIdString()));
+        assertTrue("The publishing queue based sitemap did not contain the expected article id",
+                xmlSource.contains(testArticle.getContent().getContentId().getContentId().getContentIdString()));
     }
 
     @Test

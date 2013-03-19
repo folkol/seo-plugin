@@ -18,7 +18,7 @@ import com.polopoly.testbase.TestBaseRunner;
 
 @RunWith(TestBaseRunner.class)
 @ImportTestContent(files = {"test-template.xml"}, once = true)
-public class RobotsTestInt extends SimpleWebDriverTestBase {
+public class RobotsTest extends SimpleWebDriverTestBase {
 
     @Inject
     private PolicyCMServer cmServer;
@@ -29,8 +29,7 @@ public class RobotsTestInt extends SimpleWebDriverTestBase {
     @Before
     public void createTestSite() throws CMException {
         testSite = cmServer.createContent(2, new ExternalContentId("test.seoplugin.Site"));
-        testPage = cmServer.createContent(2, new ExternalContentId("test.seoplugin.Page"));
-        testPage.getContent().setSecurityParentId(testSite.getContentId().getContentId());
+        testPage = cmServer.createContent(2, testSite.getContentId().getContentId(), new ExternalContentId("test.seoplugin.Page"));
         cmServer.commitContents(new Policy[] {testSite, testPage});
     }
 
