@@ -1,1 +1,10 @@
+# Maven
 target
+
+# Emacs temporary files
+*~
+
+# Eclipse project files
+.project
+.classpath
+.settings

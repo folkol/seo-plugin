@@ -67,7 +67,13 @@
     <dependency>
       <groupId>com.atex.plugins</groupId>
       <artifactId>baseline</artifactId>
-      <version>2.0.1</version>
+      <version>2.0.5</version>
+    </dependency>
+    <dependency>
+      <groupId>com.atex.plugins</groupId>
+      <artifactId>baseline</artifactId>
+      <version>2.0.5</version>
+      <classifier>contentdata</classifier>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -121,20 +127,6 @@
         </executions>
       </plugin>
 
-      <plugin>
-        <groupId>org.zeroturnaround</groupId>
-        <artifactId>jrebel-maven-plugin</artifactId>
-        <version>1.1.3</version>
-        <executions>
-          <execution>
-            <id>generate-rebel-xml</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
